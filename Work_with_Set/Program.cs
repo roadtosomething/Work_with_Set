@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Lab2
 {
+    //Абстрактный класс множества
     abstract class Set
     {
         //Добавление элемента в множество
@@ -21,10 +22,7 @@ namespace Lab2
             string[] arrayString = str.Split(',');
             for (int i = 0; i < arrayString.Length; i++)
             {
-                if (!isHaving(Convert.ToInt16(Convert.ToString(arrayString[i]))))
-                {
-                    Add(Convert.ToInt16(Convert.ToString(arrayString[i])));
-                }
+                Add(Convert.ToInt16(Convert.ToString(arrayString[i])));
             }
         }
         //Массив на входе
@@ -32,42 +30,19 @@ namespace Lab2
         {
             for (int i = 0; i < items.Length; i++)
             {
-                if (!isHaving(items[i]))
-                {
-                    Add(items[i]);
-                }
+                Add(items[i]);
             }
         }
         //Случайные числа в а:b
         public void Fill(int min, int max)
         {
-            //Проверка на доступность добавления
-            bool checkFlag = true;
-            for (int i = min; i <= max; i++)
-            {
-                if (!isHaving(i))
-                {
-                    checkFlag = false;
-                }
-            }
-            if (!checkFlag)
-            {
-                Random rnd = new Random();
-                int target = rnd.Next(min, max);
-                while (isHaving(target))
-                {
-                    target = rnd.Next(min, max);
-                }
-                Console.WriteLine("Число " + target + " добавлено");
-                Add(target);
-            }
-            else
-            {
-                Console.WriteLine("Все числа из диапазона включены в множество");
-            }
+            Random rnd = new Random();
+            int target = rnd.Next(min, max);
+            Console.WriteLine("Число " + target + " добавлено");
+            Add(target);
         }
     }
-
+    //Класс множества наличия
     class SimpleSet : Set
     {
         //Поля класса
@@ -218,7 +193,7 @@ public static SimpleSet operator *(SimpleSet a, SimpleSet b)
     return c;
 }
     }
-
+    //Класс битового множества
     class BitSet : Set
     {
         private long value;
@@ -349,6 +324,74 @@ public static SimpleSet operator *(SimpleSet a, SimpleSet b)
             return c;
         }
     }
+    //Класс множественного наличия
+    class MultiSet : Set
+    {
+        private int[] items;
+
+        public MultiSet (int item)
+        {
+            items = new int[item+1];
+            items[item] = 1;
+        }
+        public override void Add(int item)
+        {
+            if (item<items.Length)
+            {
+                items[item] += 1;
+            }
+            else
+            {
+                int[] newItens = new int[item+1];
+                for (int i =0; i<items.Length;i++)
+                {
+                    newItens[i] = items[i];
+                }
+                newItens[item] += 1;
+                items = newItens;
+            }
+        }
+
+        public override void Remove(int item)
+        {
+            if (isHaving(item))
+            {
+                items[item] -= 1;
+            };
+        }
+
+        public override bool isHaving(int item)
+        {
+            if (item < items.Length)
+            {
+                return (items[item] != 0);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override string ToString()
+        {
+            string str = "";
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (isHaving(i))
+                str += i +",";
+            }
+            str = str.Remove(str.Length-1);
+            if (str.Length > 0)
+            {
+                return "Значения множества: " + str;
+            }
+            else
+            {
+                return "Пустое множество";
+            }
+        }
+    }
+
     class Program
     {
 
@@ -386,6 +429,13 @@ public static SimpleSet operator *(SimpleSet a, SimpleSet b)
             BitSet A = new BitSet(test);
             BitSet B = new BitSet(300000);
             Console.WriteLine("А: "+A+"\nB: "+B+"\nСкладываем: "+(A+B)+"\nОбъединяем: "+(A*B));
+            MultiSet test = new MultiSet(5);
+            Console.WriteLine(test);
+            test.Fill("1,2,8,10,101,101,23,32,44");
+            test.Remove(101);
+            Console.WriteLine(test);
+            test.Fill(25, 30);
+            Console.WriteLine(test);
             */
         }
     }
