@@ -1,105 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using Work_with_Set;
 
 namespace Lab2
 {
     //Исключение выхода за пределы массива 
-    class TargetNotCorrectedValueForSet : Exception
-    {
-        public TargetNotCorrectedValueForSet() :base() 
-        {
-            Console.WriteLine("ВЫход за границы множества");
-        }
-    }
     //Абстрактный класс множества
-    abstract class Set
-    {
-        //Добавление элемента в множество
-        public abstract void Add(int item);
-        public abstract void Remove(int item);
-        public abstract bool isHaving(int item);
-        //Метод для отображения нашего множества
-        public override string ToString()
-        {
-            return "Значения множества: "+ToString();
-        }
-        //Конструкторы
-        //Конструктор с входной строкой
-        public void Fill(string str)
-        {
-            string[] arrayString = str.Split(',');
-            for (int i = 0; i < arrayString.Length; i++)
-            {
-                try
-                {
-                    Add(Convert.ToInt16(Convert.ToString(arrayString[i])));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(arrayString[i] + "- не число");
-                }
-            }
-        }
-        //Массив на входе
-        public void Fill(int[] items)
-        {
-            for (int i = 0; i < items.Length; i++)
-            {
-                Add(items[i]);
-            }
-        }
-        //Случайные числа в а:b
-        public void Fill(int min, int max)
-        {
-            Random rnd = new Random();
-            int target = rnd.Next(min, max);
-            Console.WriteLine("Число " + target + " добавлено");
-            Add(target);
-        }
-    }
     //Класс множества наличия
-    class SimpleSet : Set
+    //Класс битового множества
+    //Класс множественного наличия
+
+    class Program
     {
-        //Поля класса
-        public bool[] items;
 
-        //
-        //Конструктор
-        public SimpleSet(int item)
+        static void Welcome()
         {
-            items = new bool[item + 1];
-            items[item] = true;
+        Console.WriteLine("Работу выполнял студент 4-го курса ФИТ-1-2019 Кялов Юрий Викторович");
+        Console.WriteLine("Авторство указано, мой личный блог: https://github.com/roadtosomething");
+        Console.WriteLine("Начинаем работу со множествами!");
         }
-
-        public int GetmaxValue()
+        static void Dialog()
         {
-            //Проверка на наличие множества
-            if (items.Length == 0)
+            bool _process = true;
+            while (_process)
             {
-                Console.WriteLine("Пустое множество");
-                return 0;
-            }
-            else
-            {
-                int target = 0;
-                for (int i = 0; i < items.Length; i++)
+                Console.WriteLine("Выберите один из вариантов взаимодействия, в случае выхода из программы введите \"++exit\"");
+                Console.WriteLine("1. Перечисление элементов\n2. Битовый массив\n3. Логический массив");
+                string userWord = Console.ReadLine();
+                if (userWord == "++exit")
                 {
-                    if (items[i]) { target = i; }
-                }
-                return target;
-            }
-        }
-
-        //Метод добавления
-        public override void Add(int item)
-        {
-            if (items.Length < item + 1)
-            {
-                bool[] newitems = new bool[item + 1];
-                for (int i = 0; i < items.Length; i++)
-                {
-                    newitems[i] = items[i];
-                    newitems[item] = true;
+                    Console.WriteLine("До встречи!");
+                    _process = false;
                 }
                 //Переопределяем массив
                 items = newitems;
@@ -259,32 +190,38 @@ public static SimpleSet operator *(SimpleSet a, SimpleSet b)
             return value;
         }
         //Конструктор с 1 значением
-        public BitSet(int userValue)
+        public BitSet(int value)
         {
-            this.value = getIntValue(getByteArray(userValue));
+            this.value = getIntValue(getByteArray(value));
         }
         //Конструктор копирования
-        private BitSet(BitSet a)
+        public BitSet(BitSet a)
         {
             this.value = getIntValue(a.getByteArray());
         }
-        //Конструктор генерации
-        private BitSet()
+        //Конструктор пустого значения
+        public BitSet()
         {
             this.value = 0;
         }
 
         public override bool isHaving(int item)
         {
-            if (getByteArray(value)[item - 1] == 1)
-            {
-                return true;
-            }
-            else
+            if ((item > 32) || (item<1))
             {
                 return false;
             }
-            throw new TargetNotCorrectedValueForSet();
+            else
+            {
+                if (getByteArray(value)[item - 1] == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
         //Добавление 1 бита
         public override void Add(int item)
@@ -303,7 +240,7 @@ public static SimpleSet operator *(SimpleSet a, SimpleSet b)
         //Перегрузка вывода
         public override string ToString()
         {
-            return Convert.ToString(value);
+            return "Значение: " + value + "\nЗначение в бит: " + arrayShow(getByteArray(value));
         }
         //Перегрузка сложения
         public static BitSet operator +(BitSet x,BitSet y)
@@ -389,10 +326,10 @@ public static SimpleSet operator *(SimpleSet a, SimpleSet b)
                 if (isHaving(i))
                 str += i +",";
             }
+            str = str.Remove(str.Length-1);
             if (str.Length > 0)
             {
-                str = str.Remove(str.Length-1);
-                return str;
+                return "Значения множества: " + str;
             }
             else
             {
