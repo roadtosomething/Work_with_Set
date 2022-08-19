@@ -13,18 +13,31 @@ namespace Work_with_Set
         public abstract void Add(int item);
         public abstract void Remove(int item);
         public abstract bool isHaving(int item);
-        //Метод для отображения нашего множества
-
         public string GetMaxValue()
         {
             return "Максимальный элемент множества: "+maxValue;
         }
         public override string ToString()
         {
-            return "Значения множества: " + ToString();
+            string str = "";
+            for (int i = 1; i <= maxValue; i++)
+            {
+                if (isHaving(i))
+                {
+                    str += Convert.ToString(i)+",";
+                }
+            }
+            if (str.Length > 0)
+            {
+                str = str.Substring(0, str.Length - 1);
+                str = "{" + str + "}";
+                return str;
+            }
+            else
+            {
+                return "Пустое множество";
+            }
         }
-        //Конструкторы
-        //Конструктор с входной строкой
         public void Fill(string str)
         {
             string[] arrayString = str.Split(',');

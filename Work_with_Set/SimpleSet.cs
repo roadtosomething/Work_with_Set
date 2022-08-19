@@ -14,9 +14,9 @@ namespace Work_with_Set
         //Конструктор
         public SimpleSet(int item)
         {
-            base.maxValue= item;
             items = new bool[item + 1];
             items[item] = true;
+            base.maxValue = item;
         }
         //Метод добавления
         public override void Add(int item)
@@ -24,10 +24,6 @@ namespace Work_with_Set
             if (!isHaving(item))
             {
                 items[item] = true;
-            }
-            else
-            {
-                Console.WriteLine("Элемент "+item+" присутствует во множестве");
             }
         }
 
@@ -37,7 +33,6 @@ namespace Work_with_Set
             //Проверка наличия
             if (isHaving(item))
             {
-                //Удаление
                 items[item] = false;
             }
         }
@@ -55,42 +50,6 @@ namespace Work_with_Set
             }
         }
         //Строковый вывод множества
-        public override string ToString()
-        {
-            string str;
-            //Добавим флаг проверки значений
-            bool flag = false;
-            for (int i = 0; i < items.Length; i++)
-            {
-                if (items[i] == true)
-                {
-                    flag = true;
-                }
-            }
-            if (flag)
-            {
-                str = "{";
-                for (int i = 0; i < items.Length; i++)
-                {
-                    if (items[i])
-                    {
-                        if (i == items.Length - 1)
-                        {
-                            str = str + i + "}";
-                        }
-                        else
-                        {
-                            str = str + i + ",";
-                        }
-                    }
-                }
-            }
-            else
-            {
-                str = "Пустое множество";
-            }
-            return str;
-        }
         //Перегрузка оператора "+"
         public static SimpleSet operator +(SimpleSet a, SimpleSet b)
         {
