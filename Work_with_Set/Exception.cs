@@ -8,9 +8,9 @@ namespace Work_with_Set
 {
     class TargetNotCorrectedValueForSet : Exception
     {
-        public TargetNotCorrectedValueForSet() : base()
+        public TargetNotCorrectedValueForSet(int maxValue) : base()
         {
-            Console.WriteLine("ВЫход за границы множества");
+            Console.WriteLine("Выход за границы множества. Максимальный элемент множества: "+maxValue);
         }
     }
 }

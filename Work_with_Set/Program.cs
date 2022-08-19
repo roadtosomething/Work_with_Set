@@ -134,7 +134,8 @@ namespace Lab2
                 "3. Заполнить строкой\n" +
                 "4. Заполнить из массива (из файла)\n" +
                 "5. Заполнить случайным числом из диапазона (min,max)\n" +
-                "6. Просмотреть значения множества" +
+                "6. Просмотреть значения множества\n" +
+                "7. Посмотреть максимальный возможный элемент" +
                 "\nДля возврата введите ++back");
             bool _working = true;
             while (_working)
@@ -171,6 +172,9 @@ namespace Lab2
                         break;
                     case "6":
                         Console.WriteLine(set);
+                        break;
+                    case "7":
+                        Console.WriteLine(set.GetMaxValue());
                         break;
                     case "++back":
                         Console.WriteLine("Возврат к меню");

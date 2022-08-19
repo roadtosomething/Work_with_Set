@@ -47,6 +47,7 @@ namespace Work_with_Set
         //Конструктор с 1 значением
         public BitSet(int userValue)
         {
+            base.maxValue= userValue;
             short[] array = new short[32];
             array[userValue] = 1;
             this.value = getIntValue(array);
@@ -54,11 +55,13 @@ namespace Work_with_Set
         //Конструктор копирования
         private BitSet(BitSet a)
         {
+            base.maxValue = a.maxValue;
             this.value = getIntValue(a.getByteArray());
         }
         //Конструктор генерации
         private BitSet()
         {
+            base.maxValue = 0;
             this.value = 0;
         }
 
@@ -72,7 +75,6 @@ namespace Work_with_Set
             {
                 return false;
             }
-            throw new TargetNotCorrectedValueForSet();
         }
         //Добавление 1 бита
         public override void Add(int item)

@@ -8,11 +8,17 @@ namespace Work_with_Set
 {
     abstract class Set
     {
+        protected int maxValue=0;
         //Добавление элемента в множество
         public abstract void Add(int item);
         public abstract void Remove(int item);
         public abstract bool isHaving(int item);
         //Метод для отображения нашего множества
+
+        public string GetMaxValue()
+        {
+            return "Максимальный элемент множества: "+maxValue;
+        }
         public override string ToString()
         {
             return "Значения множества: " + ToString();
@@ -22,21 +28,55 @@ namespace Work_with_Set
         public void Fill(string str)
         {
             string[] arrayString = str.Split(',');
-            for (int i = 0; i < arrayString.Length; i++)
+            if (maxValue == 0)
             {
-                int val;
-                if (int.TryParse(arrayString[i], out val)) 
-                { 
-                    Add(val); 
+                int maxValueString=0;
+                for (int i = 0; i < arrayString.Length; i++)
+                {
+                    if (maxValueString < Convert.ToInt16(arrayString[i]))
+                    {
+                        maxValueString = Convert.ToInt16(arrayString[i]);
+                    }
+                }
+                maxValue = maxValueString;
+            }
+            else
+            {
+                for (int i = 0; i < arrayString.Length; i++)
+                {
+                    int val;
+                    if (int.TryParse(arrayString[i], out val))
+                    {
+                        if (val <= maxValue)
+                        {
+                            Add(val);
+                        }
+                        else
+                        {
+                            throw new TargetNotCorrectedValueForSet(maxValue);
+                        }
+                    }
                 }
             }
+            
         }
         //Массив на входе
         public void Fill(int[] items)
         {
+            if (maxValue == 0)
+            {
+                maxValue = items.Max();
+            }
             for (int i = 0; i < items.Length; i++)
             {
-                Add(items[i]);
+                if (items[i] <= maxValue)
+                {
+                    Add(items[i]);
+                }
+                else
+                {
+                    throw new TargetNotCorrectedValueForSet(maxValue);
+                }
             }
         }
         //Случайные числа в а:b
@@ -44,8 +84,21 @@ namespace Work_with_Set
         {
             Random rnd = new Random();
             int target = rnd.Next(min, max);
-            Console.WriteLine("Число " + target + " добавлено");
-            Add(target);
+            if (maxValue == 0)
+            {
+                maxValue=target;
+            }
+            else
+            {
+                if (maxValue >= target)
+                {
+                    Add(target);
+                }
+                else
+                {
+                    throw new TargetNotCorrectedValueForSet(maxValue);
+                }
+            }
         }
     }
 }

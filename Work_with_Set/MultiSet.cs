@@ -12,6 +12,7 @@ namespace Work_with_Set
 
         public MultiSet(int item)
         {
+            base.maxValue = item;
             items = new int[item + 1];
             items[item] = 1;
         }
