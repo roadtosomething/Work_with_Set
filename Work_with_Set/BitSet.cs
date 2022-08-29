@@ -8,87 +8,40 @@ namespace Work_with_Set
 {
     class BitSet : Set
     {
-        private long value;
-        //Конвертор Десятичная - двоичная
-        private short[] getByteArray()
-        {
-            short[] byteArray = new short[32];
-            int count = 0;
-            while (value > 0)
-            {
-                byteArray[count] = (short)(value % 2);
-                count++;
-                value /= 2;
-            }
-            return byteArray;
-        }
-        private short[] getByteArray(long target)
-        {
-            short[] byteArray = new short[32];
-            int count = 0;
-            while (target > 0)
-            {
-                byteArray[count] = (short)(target % 2);
-                count++;
-                target /= 2;
-            }
-            return byteArray;
-        }
+        private uint value;
         //Конвертор Двоичная - десятичная
-        private long getIntValue(short[] array)
-        {
-            long value = 0;
-            for (int i = 0; i < array.Length; i++)
-            {
-                value += array[i] * (long)Math.Pow(2, i);
-            }
-            return value;
-        }
+        BDConvertor bdc = new BDConvertor();
         //Конструктор с 1 значением
         public BitSet(int userValue)
         {
-            base.maxValue= userValue;
+            base.maxValue= 32;
             short[] array = new short[32];
-            array[userValue] = 1;
-            this.value = getIntValue(array);
+            array[userValue-1] = 1;
+            value = bdc.getIntValue(array);
         }
-        //Конструктор копирования
-        private BitSet(BitSet a)
-        {
-            base.maxValue = a.maxValue;
-            this.value = getIntValue(a.getByteArray());
-        }
-        //Конструктор генерации
-        private BitSet()
-        {
-            base.maxValue = 0;
-            this.value = 0;
-        }
-
         public override bool isHaving(int item)
         {
-            if (getByteArray(value)[item - 1] == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (bdc.getByteArray(value)[item-1] != 0);
         }
         //Добавление 1 бита
         public override void Add(int item)
         {
-            short[] newArray = getByteArray(value);
-            newArray[item - 1] = 1;
-            value = getIntValue(newArray);
+            if (!isHaving(item))
+            {
+                short[] array = bdc.getByteArray(value);
+                array[item-1] = 1;
+                value = bdc.getIntValue(array);
+            }
         }
         //Удаление бита
         public override void Remove(int item)
         {
-            short[] newArray = getByteArray(value);
-            newArray[item - 1] = 0;
-            value = getIntValue(newArray);
+            if (isHaving(item))
+            {
+                short[] array = bdc.getByteArray(value);
+                array[item-1] = 0;
+                value = bdc.getIntValue(array);
+            }
         }
         //Перегрузка вывода
         public override string ToString()
@@ -98,29 +51,26 @@ namespace Work_with_Set
         //Перегрузка сложения
         public static BitSet operator +(BitSet x, BitSet y)
         {
-            BitSet c = new BitSet();
             for (int i = 1; i <= 32; i++)
             {
                 if (x.isHaving(i) || y.isHaving(i))
                 {
-                    c.Add(i);
+                    x.Add(i);
                 }
             }
-            return c;
+            return x;
         }
         //Перегрузка объединения
         public static BitSet operator *(BitSet x, BitSet y)
         {
-            BitSet c = new BitSet();
             for (int i = 1; i <= 32; i++)
             {
-                if (x.isHaving(i) & y.isHaving(i))
+                if (!x.isHaving(i) || !y.isHaving(i))
                 {
-                    c.Add(i);
+                    x.Remove(i);
                 }
-
             }
-            return c;
+            return x;
         }
     }
 
