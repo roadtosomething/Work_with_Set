@@ -4,11 +4,6 @@ using Work_with_Set;
 
 namespace Lab2
 {
-    //Исключение выхода за пределы массива 
-    //Абстрактный класс множества
-    //Класс множества наличия
-    //Класс битового множества
-    //Класс множественного наличия
     class Program
     {
 
@@ -160,7 +155,13 @@ namespace Lab2
                         set.Fill(Console.ReadLine());
                         break;
                     case "4":
-                        //
+                        Console.WriteLine("Введиье расположение файла начиная с корневой папки";
+                        int[] items = new items[0];
+                        foreach (string line in System.IO.File.ReadLines(@"c:\test.txt"))
+                        {
+                            items.Append(Convert.ToInt32(line));
+                        }
+                        set.Fill(items);
                         break;
                     case "5":
                         Console.WriteLine("Введите значения максимального и минимального значения интервала min max\n");
